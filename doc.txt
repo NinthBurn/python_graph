@@ -1,0 +1,149 @@
+Specification:
+We define a class called DirectedGraph, having the following methods:
+
+	getVertices(self):
+    # Returns a list with all vertices in a graph
+
+	getEdges(self):
+	# Returns a list with all edges of a graph
+
+	getNumVertices(self):
+	# Returns the number of vertices in a graph
+
+	getNumEdges(self):
+    # Returns the number of edges in a graph
+
+	isVertex(self, x):
+    # Returns True if x belongs to the graph, or returns False otherwise
+
+	isEdge(self, x, y):
+    # Returns True if there exists an edge from x to y in the graph, or returns False otherwise
+
+	addVertex(self, x):
+    # Adds a vertex to the graph, if it does not exist already
+	# Precondition: given vertex must not already be in the graph
+	
+	getPredecessors(self, x):
+    # Returns a list with all predecessors of x
+	# Precondition: given vertex must be in the graph
+
+	getSuccessors(self, x):
+    # Returns a list with all successors of x
+	# Precondition: given vertex must be in the graph
+
+	outDegree(self, x):
+    # Returns the out degree of a vertex, or -1 if it is not in the graph	
+	# Precondition: given vertex must be in the graph
+	
+	inDegree(self, x):
+    # Returns the in degree of a vertex, or -1 if it is not in the graph
+	# Precondition: given vertex must be in the graph
+
+	removeVertex(self, x):
+    # Removes a vertex from the graph
+	# Precondition: given vertex must be in the graph
+    
+	addEdge(self, x, y, cost):
+    # Adds an edge to the graph
+	# Precondition: given vertices must belong to the graph, and the edge must not already exist
+
+	removeEdge(self, x, y):
+    # Removes an edge from the graph
+	# Precondition: given edge must exist in the graph
+	
+	getCost(self, x, y):
+    # Returns the cost of a given edge
+	# Precondition: given edge must exist in the graph
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Functions defined outside the class:
+	read_graph(graph: DirectedGraph, filename: str):
+	# Reads a graph from a specified text file. We assume the data is correct.
+			
+	save_graph(graph: DirectedGraph, filename: str):
+	# Writes the graph's data to a specified text file.
+
+	generate_graph(num_vertices: int, num_edges: int):
+	# Returns a graph generated according to the parameters.
+
+	copy_graph(og_graph: DirectedGraph):
+	# Returns the copy of a given graph.
+
+	print_graph(graph: DirectedGraph):
+	# Prints a given graph to the terminal.
+		
+	graph_copy_test():
+	# Function that tests the copy_graph() method.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Implementation:
+	It's done in Python. The class uses 3 dictionaries:
+		* vIn, where the key x is a vertex and it stores a list with all the vertices that form an edge going from it to x
+		* vOut, where the key x is a vertex and it stores a list with all the vertices that form an edge going from x to it
+		* edges, where the key is a pair of vertices forming an edge, and it stores the cost of said edge
+		
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+some dumb stuff not used anymore
+
+# Returns a list with all the connected components of a directed graph, using BFS algorithm.
+def connected_bfs_directed(graph: g.DirectedGraph):
+    # get a list with all the vertices
+    vertices = graph.getVertices()
+    connected_components = []
+
+    # for each vertex, find the connected component it belongs to
+    while len(vertices) > 0:
+        x = vertices[0]
+        
+        # get the set of vertices forming a connected component using BFS
+        component, children, cost = bfs(graph, x)
+        component_vertices = [x]
+
+        for vertex in component.keys():
+            if vertex == x:
+                continue
+
+            c1, c2, c3 = bfs(graph, vertex)
+        
+            if x in c1:
+                component_vertices.append(vertex)
+
+        for vertex in component_vertices:
+            vertices.remove(vertex)
+
+        connected_components.append(component_vertices)
+
+    return connected_components
+
+# Returns a list with all the connected components of a directed graph, using DFS algorithm.
+def connected_dfs_directed(graph: g.DirectedGraph):
+    # get a list with all the vertices
+    vertices = graph.getVertices()
+    connected_components = []
+
+    # for each vertex, find the connected component it belongs to
+    while len(vertices) > 0:
+        x = vertices[0]
+
+        # get the set of vertices forming a connected component using BFS
+        component, children, cost = dfs(graph, x)
+        component_vertices = []
+        component_vertices.append(x)
+
+        for vertex in component.keys():
+            if vertex == x:
+                continue
+
+            c1, c2, c3 = dfs(graph, vertex)
+        
+            if x in c1:
+                component_vertices.append(vertex)
+
+        for vertex in component_vertices:
+            vertices.remove(vertex)
+
+        connected_components.append(component_vertices)
+
+    return connected_components
