@@ -136,6 +136,7 @@ def dfs(graph: g.DirectedGraph, src):
         for x in graph.getSuccessors(current_node):
             # if node was not visited, add it on the stack
             if x not in visited:
+                children[current_node].append(x)
                 children[x] = []
                 parent[x] = current_node
                 dist[x] = dist[current_node] + 1
